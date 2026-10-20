@@ -1,7 +1,9 @@
-from sqlalchemy.orm import Mapped, MappedColumn
-from .engine import Base
 
+from sqlalchemy.orm import Mapped, MappedColumn
+from db.__pychache__.engine import Base
 class users(Base):
-    __tablename__ = 'users'
-    username: Mapped[str] = MappedColumn(unique=True, default=None)
-    password: Mapped[str] = MappedColumn(default=None)
+    __tablename__ = "users"
+    id : Mapped[int]= MappedColumn(primary_key=True)
+    password: Mapped[str] = MappedColumn()
+    username: Mapped[str] = MappedColumn(unique=True, default=None, nullable=False)
+    email: Mapped[str] = MappedColumn()
