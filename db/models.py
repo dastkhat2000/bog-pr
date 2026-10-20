@@ -1,6 +1,6 @@
 
 from sqlalchemy.orm import Mapped, MappedColumn
-from db.__pychache__.engine import Base
+from db.engine import Base
 class users(Base):
     __tablename__ = "users"
     id : Mapped[int]= MappedColumn(primary_key=True)

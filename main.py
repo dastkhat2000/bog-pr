@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from db.__pychache__.engine import Base, engine
+from db.engine import Base, engine
 from routers.users import router as users_router
 import uvicorn
 app = FastAPI()
