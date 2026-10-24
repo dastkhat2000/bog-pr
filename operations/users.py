@@ -11,7 +11,7 @@ class userOperations:
         self.dbsession = dbsession
 
 
-    async def creat(self, username:str, password:str) -> users :
+    async def create(self, username:str, password:str) -> users :
         user= users(username=username, password=password)
         async with self.dbsession as session:
             session.add(user)
@@ -37,13 +37,12 @@ class userOperations:
             user_data.username=new_username
             return user_data
 
-    async def delete_username(self, username:str) -> users :
-        query = sa.select([users]).where(users.username == username)
-        delete_query = sa.delete(users).where(users.username == username)
+    async def user_delete_account(self, username:str, password: str ) -> users :
+        delete_query = sa.select([users]).where(users.username == username, password==password)
+        async with self.dbsession as session:
+         delete_query = sa.delete(users).where(users.username == username)
         async with self.dbsession as session:
             user_data= await session.execute(query)
-            if user_data is None:
-                raise ValidationErr("USER NOT FOUND")
             await session.execute(delete_query)
             await session.commit()
 
