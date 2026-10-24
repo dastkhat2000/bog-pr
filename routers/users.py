@@ -1,18 +1,33 @@
-from fastapi import APIRouter
-from fastapi.params import Body
+from typing import Annotated
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.util import await_
+from watchfiles import awatch
 
-from schemas._Input import register_user
+from operations.users import userOperations
+from fastapi import APIRouter, Depends, Body
+from fastapi.params import Body
+from schemas._Input import RegisterInput
+from db.engine import get_db
 
 router = APIRouter()
 @router.post("/register")
-async def register(data: register_user = Body):
-    return  data
+async def register(
+        db_Session : Annotated[AsyncSession, Depends(get_db)],
+        data: "RegisterInput" = Body):
+    user= await userOperations(db_Session).creat(username=data.username, password=data.password)
 
 @router.post("/login")
 async def login():
     ...
-@router.get("/")
-async def get_user_profile():
+
+    @router.get("/{username}/")
+    async def get_user_profile(username: str,
+        db_Session: Annotated[AsyncSession, Depends(get_db)], ):
+        user_profile = await userOperations(db_Session).get_user_by_username(
+        username)
+
+    return user_profile
+
     ...
 @router.put("/")
 async def user_update_profile():
