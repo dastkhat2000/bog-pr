@@ -2,7 +2,6 @@ from typing import Annotated
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.util import await_
 from watchfiles import awatch
-
 from operations.users import userOperations
 from fastapi import APIRouter, Depends, Body
 from fastapi.params import Body
