@@ -1,12 +1,16 @@
 from typing import Annotated
+
+import user_profile
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.util import await_
 from watchfiles import awatch
 from operations.users import userOperations
 from fastapi import APIRouter, Depends, Body
 from fastapi.params import Body
-from schemas._Input import RegisterInput
+from schemas._Input import RegisterInput, UpdateUserProfileInput, DeleteUserAccountInput
 from db.engine import get_db
+from operations.users import userOperations
+
 
 router = APIRouter()
 @router.post("/register")
@@ -39,6 +43,6 @@ async def update_user_profile(
 @router.delete("/")
 async def delete_user_account(
         db_Session: Annotated[AsyncSession, Depends(get_db)],
-        data: DeleteUserAccount = Body(),
+        data: DeleteUserAccountInput = Body(),
 ):
     user_profile= await userOperations(db_Session).user_delete_account(data.username, data.password)

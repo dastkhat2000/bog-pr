@@ -1,6 +1,6 @@
 from idlelib import query
-from xml.dom import ValidationErr
-
+from fastapi import HTTPException
+from exeptions import NotFoundException
 from pydantic_core.core_schema import none_schema
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.util import await_
@@ -22,7 +22,7 @@ class userOperations:
         async with self.dbsession as session:
             user_data= session.scalar(query)
             if user_data is None:
-                raise ValidationErr ("USER NOT FOUND")
+                raise HTTPException (NotFoundException)
             return user_data
 
     async def update_username(self, old_username:str, new_username: str ) -> users :
@@ -32,7 +32,7 @@ class userOperations:
             user_data=await session.scalar(query)
 
             if user_data is None:
-                raise ValidationErr("USER NOT FOUND")
+                raise HTTPException(NotFoundException)
             await session.execute(update_query)
             user_data.username=new_username
             return user_data
