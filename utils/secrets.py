@@ -1,2 +1,2 @@
 from passlib.context import CryptContext
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+password_manager = CryptContext(schemes=["bcrypt"], deprecated="auto")
